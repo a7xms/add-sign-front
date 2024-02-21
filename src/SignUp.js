@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import {set, useForm} from 'react-hook-form';
 import {
     Container,
     Typography,
@@ -31,8 +31,16 @@ const SignupPage = () => {
 
     useEffect(() => {
         if(rutoken) {
-            const plugin = Promise.all(rutoken.loadPlugin());
-            console.log(plugin);
+            rutoken.enumerateDevices().then((devices) => {
+                if(devices.length > 0) {
+                    rutoken.getDeviceLabel(devices[0]).then((label) => {
+                        console.log(label);
+                    });
+                }
+                else {
+                    console.log("Could not detect rutoken ecp")
+                }
+            })
         }
     }, [rutoken]);
 
