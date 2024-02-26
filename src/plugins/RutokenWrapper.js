@@ -1,9 +1,12 @@
 import rutoken from './rutoken';
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const RutokenWrapper = () => {
     const [plugin, setPlugin] = useState();
+    const [extensionInstalled, setExtensionInstalled] = useState();
+    const [pluginInstalled, setPluginInstalled] = useState();
     const [devices, setDevices] = useState();
+    const [certificates, setCertificates] = useState();
 
     function checkVersion(lastVersion) {
         if (plugin.version.toString() < lastVersion)
@@ -24,7 +27,7 @@ const RutokenWrapper = () => {
         xhr.send();
     }
 
-    useEffect(() => {
+    const initializeRutoken = () => {
         rutoken.ready
             // Проверка установки расширение 'Адаптера Рутокен Плагина' в Google Chrome
             .then(function() {
@@ -65,6 +68,10 @@ const RutokenWrapper = () => {
             }, function(msg) {
                 console.log("Plugin status: ", msg);
             });
+    }
+
+    useEffect(() => {
+
     }, []);
 
 

@@ -33,12 +33,14 @@ const SignupPage = () => {
         if(rutoken) {
             rutoken.enumerateDevices().then((devices) => {
                 if(devices.length > 0) {
-                    rutoken.getDeviceLabel(devices[0]).then((label) => {
-                        console.log(label);
-                    });
+                    devices.map((device) => {
+                        rutoken.getDeviceLabel(device).then((label) => {
+                            setDevices();
+                        });
+                    })
                 }
                 else {
-                    console.log("Could not detect rutoken ecp")
+                    console.log("Could not detect rutoken ecp;")
                 }
             })
         }
@@ -62,7 +64,7 @@ const SignupPage = () => {
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        {devices.map(d => <MenuItem value={d}>{d}</MenuItem>)}
+                        {devices.map((device, index) => <MenuItem value={device} key={index}>{device}</MenuItem>)}
                     </Select>
                 </FormControl>
                 <FormControl fullWidth error={Boolean(errors.pinCode)}>
