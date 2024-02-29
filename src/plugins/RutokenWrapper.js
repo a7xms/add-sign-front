@@ -1,19 +1,24 @@
 import rutoken from './rutoken';
 import {useEffect, useRef, useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import {set} from "react-hook-form";
 
-const RutokenWrapper = () => {
+const RutokenWrapper = ({buttonName}) => {
     const [plugin, setPlugin] = useState(null);
     const [extensionInstalled, setExtensionInstalled] = useState(false);
     const [pluginInstalled, setPluginInstalled] = useState(false);
     const [devices, setDevices] = useState([]);
     const [deviceLabels, setDeviceLabels] = useState([]);
     const [certificates, setCertificates] = useState([]);
+    const [device, setDevice] = useState(null);
     const [certificate, setCertificate] = useState(null);
+    const [pinCode, setPinCode] = useState("");
 
-    const handleSubmit = () => {
-        console.log("Hello world!");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await plugin.login(device, pinCode);
+        var options = {};
+        let signedData = await plugin.sign(device, certificate, "This is the text to be signed.", plugin.DATA_FORMAT_PLAIN, options);
+        console.log(signedData);
     }
 
     const initializeRutoken = async () => {
@@ -42,16 +47,20 @@ const RutokenWrapper = () => {
     }
 
     const handleDeviceSelect = async (e) => {
-        let device = devices[e.target.value];
-        let [a, b, c, d] = await Promise.all([
-            this.plugin.enumerateCertificates(device, plugin.CERT_CATEGORY_UNSPEC),
-            this.plugin.enumerateCertificates(device, plugin.CERT_CATEGORY_CA),
-            this.plugin.enumerateCertificates(device, plugin.CERT_CATEGORY_OTHER),
-            this.plugin.enumerateCertificates(device, plugin.CERT_CATEGORY_USER),
-        ]);
-
-        setCertificates([].concat(a, b, c, d));
+        setDevice(devices[e.target.value]);
+        let certificates = await plugin.enumerateCertificates(devices[e.target.value], plugin.CERT_CATEGORY_UNSPEC);
+        setCertificates(certificates);
     }
+
+    const handleCertificateSelect = async (e) => {
+        setCertificate(certificates[e.target.value]);
+    }
+
+    const handlePinCodeChange = (e) => {
+        setPinCode(e.target.value);
+    }
+
+
 
 
     useEffect(() => {
@@ -98,7 +107,7 @@ const RutokenWrapper = () => {
                     id="certificates"
                     name="certificates"
                     defaultValue=""
-                    // onChange={handleChange}
+                    onChange={handleCertificateSelect}
                 >
                     {certificates.map((certificate, index) => <MenuItem value={index} key={index}>{certificate}</MenuItem> )}
                 </Select>
@@ -110,7 +119,7 @@ const RutokenWrapper = () => {
                     name="pin-code"
                     label="Pin Code"
                     type="number"
-                    // onChange={handleChange}
+                    onChange={handlePinCodeChange}
                 />
             </FormControl>
 
@@ -119,7 +128,7 @@ const RutokenWrapper = () => {
                 variant="contained"
                 color="primary"
             >
-                Submit
+                {buttonName}
             </Button>
         </form>
     );

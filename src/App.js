@@ -1,14 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
-import SignUp from "./SignUp";
-import SignupPage from "./SignUp";
-import RutokenWrapper from "./plugins/RutokenWrapper";
+import Home from "./Home";
+import {RouterProvider} from "react-router-dom";
+import {router} from "./routes";
 
 function App() {
   return (
-    <div className="App">
-      <RutokenWrapper/>
-    </div>
+      <RouterProvider  router={router}/>
   );
 }
 
