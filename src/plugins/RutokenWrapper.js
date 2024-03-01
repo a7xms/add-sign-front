@@ -2,7 +2,7 @@ import rutoken from './rutoken';
 import {useEffect, useRef, useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 
-const RutokenWrapper = ({buttonName}) => {
+const RutokenWrapper = ({buttonName, data, submit}) => {
     const [plugin, setPlugin] = useState(null);
     const [extensionInstalled, setExtensionInstalled] = useState(false);
     const [pluginInstalled, setPluginInstalled] = useState(false);
@@ -17,8 +17,8 @@ const RutokenWrapper = ({buttonName}) => {
         e.preventDefault();
         await plugin.login(device, pinCode);
         var options = {};
-        let signedData = await plugin.sign(device, certificate, "This is the text to be signed.", plugin.DATA_FORMAT_PLAIN, options);
-        console.log(signedData);
+        let signedData = await plugin.sign(device, certificate, data, plugin.DATA_FORMAT_PLAIN, options);
+        submit(signedData);
     }
 
     const initializeRutoken = async () => {
