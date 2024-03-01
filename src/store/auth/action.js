@@ -30,9 +30,24 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
     'auth/login',
-    async ({...data}, thunkAPI) => {
+    async ({navigate, ...data}, thunkAPI) => {
         try {
             const response = await requester.post("/login", data);
+            localStorage.setItem('token', response.data.accessToken);
+            return response.data;
+        }
+        catch (error) {
+            thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
+export const getUserInfo = createAsyncThunk(
+    'user/info',
+    async (thunkAPI) => {
+        try {
+            const response = await requester.get("/user/info");
+            localStorage.setItem('user', JSON.stringify(response.data));
             return response.data;
         }
         catch (error) {

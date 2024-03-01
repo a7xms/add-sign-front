@@ -14,20 +14,8 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
+import NavBar from "./components/NavBar";
 
-
-const addsignReactName = 'AddSign ';
-
-const menuItems = [
-    {
-        name: 'Входящие',
-        path: '/incoming',
-    },
-    {
-        name: 'Исходящие',
-        path: '/outgoing',
-    },
-];
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -68,18 +56,7 @@ const OutgoingDocuments = () => {
 
     return (
         <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className="grow">
-                        {addsignReactName}
-                    </Typography>
-                    {menuItems.map((item) => (
-                        <Button key={item.path} color="inherit" component={Link} to={item.path}>
-                            {item.name}
-                        </Button>
-                    ))}
-                </Toolbar>
-            </AppBar>
+            <NavBar/>
             <div>
                 <h1>Исходящие</h1>
             </div>

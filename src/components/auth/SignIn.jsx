@@ -18,8 +18,9 @@ const SignInPage = () => {
             key: data.key,
             sign: sign
         }
-        dispatch(login(request));
-        navigate("/")
+        dispatch(login({navigate, ...request})).then(() => {
+            navigate("/")
+        });
     }
 
     useEffect(() => {
