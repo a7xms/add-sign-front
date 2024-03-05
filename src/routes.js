@@ -5,6 +5,10 @@ import OutgoingDocuments from "./Outgouing";
 import {createBrowserRouter} from "react-router-dom";
 import RegistrationSuccess from "./components/auth/RegistrationSuccess";
 import SignInPage from "./components/auth/SignIn";
+import CreateDocumentForm from "./components/CreateDocumentForm";
+import CreateDocumentPage from "./pages/CreateDocument";
+import ViewDocument from "./pages/ViewDocument";
+import ViewDocumentPage from "./pages/ViewDocumentPage";
 
 const routes =[
     {
@@ -30,6 +34,14 @@ const routes =[
     {
         path: '/signin',
         element: <SignInPage/>
+    },
+    {
+        path: "/new/doc",
+        element: <CreateDocumentPage/>
+    },
+    {
+        path: "view/doc/:id",
+        element: <ViewDocumentPage/>
     }
 ];
 

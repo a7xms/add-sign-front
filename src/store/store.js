@@ -1,8 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {incomingDocumentsSlice} from "./documents/incoming/slice";
-import {outgoingDocumentsSlice} from "./documents/outgoing/slice";
+import {createDocumentSlice, outgoingDocumentsSlice} from "./documents/outgoing/slice";
 import {authSlice} from "./auth/slice";
 import {loginSlice} from "./auth/loginSlice";
+import {viewDocumentSlice} from "./documents/slice";
 
 
 export const store = configureStore({
@@ -11,5 +12,7 @@ export const store = configureStore({
         outgoingDocumentsReducer: outgoingDocumentsSlice.reducer,
         authReducer: authSlice.reducer,
         loginReducer: loginSlice.reducer,
+        createDocumentReducer: createDocumentSlice.reducer,
+        viewDocumentReducer: viewDocumentSlice.reducer,
     }
 })

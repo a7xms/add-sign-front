@@ -1,6 +1,6 @@
 import {
     AppBar,
-    Button,
+    Button, Container,
     Paper,
     Table,
     TableBody,
@@ -10,11 +10,14 @@ import {
     Toolbar,
     Typography
 } from "@mui/material";
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 import NavBar from "./components/NavBar";
+import {useDispatch, useSelector} from "react-redux";
+import {getOutgoingDocuments} from "./store/documents/outgoing/action";
+import Box from "@mui/material/Box";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -37,57 +40,61 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createData(name, dateCreated, status, comments) {
-    return { name, dateCreated, status, comments };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 
 
 const OutgoingDocuments = () => {
+    const dispatch = useDispatch();
+    const {data} = useSelector(state => state.outgoingDocumentsReducer);
 
+    useEffect(() => {
+        dispatch(getOutgoingDocuments());
+    }, []);
 
     return (
         <div>
             <NavBar/>
-            <div>
-                <h1>Исходящие</h1>
-            </div>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>№</StyledTableCell>
-                            <StyledTableCell align="right">Наименование документа</StyledTableCell>
-                            <StyledTableCell align="right">Дата создания</StyledTableCell>
-                            <StyledTableCell align="right">Статус</StyledTableCell>
-                            <StyledTableCell align="right">Комментарии</StyledTableCell>
-                            <StyledTableCell align="right">Действия</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row, index) => (
-                            <StyledTableRow key={row.name}>
-                                <StyledTableCell component="th" scope="row">
-                                    {index + 1}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{row.name}</StyledTableCell>
-                                <StyledTableCell align="right">{row.dateCreated}</StyledTableCell>
-                                <StyledTableCell align="right">{row.status}</StyledTableCell>
-                                <StyledTableCell align="right">{row.comments}</StyledTableCell>
-                                <StyledTableCell align="right">просмотр</StyledTableCell>
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Container sx={{mt: 2}} maxWidth={"xl"}>
+                <Box display={"flex"} sx={{mb: 2, justifyContent: "space-between"}}>
+                    <Typography variant={"h4"}>Исходящие</Typography>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        component={Link}
+                        to={"/new/doc"}
+                    >
+                        Создать документ
+                    </Button>
+
+                </Box>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell>№</StyledTableCell>
+                                <StyledTableCell align="right">Наименование документа</StyledTableCell>
+                                <StyledTableCell align="right">Дата создания</StyledTableCell>
+                                <StyledTableCell align="right">Комментарии</StyledTableCell>
+                                <StyledTableCell align="right">Действия</StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {data.map((row, index) => (
+                                <StyledTableRow key={row.id}>
+                                    <StyledTableCell component="th" scope="row">
+                                        {index + 1}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">{row.name}</StyledTableCell>
+                                    <StyledTableCell align="right">{row.createdAt}</StyledTableCell>
+                                    <StyledTableCell align="right">{row.comment}</StyledTableCell>
+                                    <StyledTableCell align="right"><Link to={"/view/doc/" + row.id}>просмотр</Link></StyledTableCell>
+                                </StyledTableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
+
         </div>
     )
 }

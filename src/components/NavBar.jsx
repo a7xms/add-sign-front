@@ -52,7 +52,7 @@ function NavBar() {
     };
 
     useEffect(() => {
-        if(!user) {
+        if(Object.keys(user).length === 0) {
             dispatch(getUserInfo());
         }
     }, []);
