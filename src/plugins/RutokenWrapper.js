@@ -88,8 +88,9 @@ const RutokenWrapper = ({buttonName, data, submit}) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <FormControl>
+        <form onSubmit={handleSubmit}
+              style={{display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center'}}>
+            <FormControl style={{minWidth: '120px'}}>
                 <InputLabel htmlFor="devices">Devices</InputLabel>
                 <Select
                     id="devices"
@@ -97,11 +98,12 @@ const RutokenWrapper = ({buttonName, data, submit}) => {
                     defaultValue=""
                     onChange={handleDeviceSelect}
                 >
-                    {deviceLabels.map((deviceLabel, index) => <MenuItem value={index} key={index}>{deviceLabel}</MenuItem> )}
+                    {deviceLabels.map((deviceLabel, index) => <MenuItem value={index}
+                                                                        key={index}>{deviceLabel}</MenuItem>)}
                 </Select>
             </FormControl>
 
-            <FormControl>
+            <FormControl style={{minWidth: '120px'}}>
                 <InputLabel htmlFor="certificates">Certificates</InputLabel>
                 <Select
                     id="certificates"
@@ -109,11 +111,12 @@ const RutokenWrapper = ({buttonName, data, submit}) => {
                     defaultValue=""
                     onChange={handleCertificateSelect}
                 >
-                    {certificates.map((certificate, index) => <MenuItem value={index} key={index}>{certificate}</MenuItem> )}
+                    {certificates.map((certificate, index) => <MenuItem value={index}
+                                                                        key={index}>{certificate}</MenuItem>)}
                 </Select>
             </FormControl>
 
-            <FormControl>
+            <FormControl style={{minWidth: '120px'}}>
                 <TextField
                     id="pin-code"
                     name="pin-code"
