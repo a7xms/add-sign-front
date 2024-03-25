@@ -14,7 +14,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Upload as UploadIcon } from '@mui/icons-material';
 import {useDispatch, useSelector} from "react-redux";
-import {createDocument, uploadFile} from "../store/documents/outgoing/action";
+import {createDocument, signDocument, uploadFile} from "../store/documents/outgoing/action";
 import RutokenWrapper from "../plugins/RutokenWrapper";
 import {useNavigate} from "react-router-dom";
 
@@ -66,7 +66,7 @@ const FileUploadDialog = ({ onClose, open }) => {
     );
 };
 
-const PinDialog = ({ onClose, open, data, onSignSubmit }) => {
+export const PinDialog = ({ onClose, open, data, onSignSubmit }) => {
 
     return (
         <Dialog onClose={onClose} open={open}>
@@ -88,10 +88,10 @@ const CreateDocumentForm = () => {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [comment, setComment] = useState("");
-    const [sign, setSign] = useState("");
     const {attachment} = useSelector(state => state.createDocumentReducer);
     const [fileUploadDialogOpen, setFileUploadDialogOpen] = useState(false);
     const [pinDialogOpen, setPinDialogOpen] = useState(false);
+    const [documentId, setDocumentId] = useState(null);
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -102,22 +102,38 @@ const CreateDocumentForm = () => {
     }
 
     const onSignSubmit = (sign) => {
-        setSign(sign);
-        setPinDialogOpen(false);
+        const data = {
+            documentId: documentId,
+            cms: sign
+        }
+        dispatch(signDocument({data})).then(() => {
+            navigate("/outgoing");
+        })
     }
 
     const handleCreateDocument = () => {
         const data = {
             name: name,
             attachmentId: attachment.id,
-            comment: comment,
-            cms: sign
+            comment: comment
         }
-        dispatch(createDocument({data}))
-            .then(() => {
-                navigate("/outgoing")
-            });
+        dispatch(createDocument({data})).then((data) => {
+            navigate("/outgoing");
+        })
         
+    }
+
+    const handleCreateAndSignDocument = () => {
+        const data = {
+            name: name,
+            attachmentId: attachment.id,
+            comment: comment
+        }
+        dispatch(createDocument({data})).then((data) => {
+            setDocumentId(data.payload.id);
+            setPinDialogOpen(true);
+        });
+
     }
 
     return (
@@ -152,13 +168,10 @@ const CreateDocumentForm = () => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setPinDialogOpen(true)}
+                onClick={handleCreateAndSignDocument}
             >
-                Подписать
+                Создать и Подписать
             </Button>
-            <Typography>
-                {sign.length === 0 ? "" : (<CheckCircleIcon fontSize={"small"}/>)}
-            </Typography>
             <FileUploadDialog
                 open={fileUploadDialogOpen}
                 onClose={() => setFileUploadDialogOpen(false)}

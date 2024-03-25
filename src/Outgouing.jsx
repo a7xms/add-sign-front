@@ -1,6 +1,6 @@
 import {
     AppBar,
-    Button, Container,
+    Button, Container, Dialog, DialogActions, DialogContent, DialogTitle,
     Paper,
     Table,
     TableBody,
@@ -10,15 +10,22 @@ import {
     Toolbar,
     Typography
 } from "@mui/material";
-import React, {useEffect} from "react";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 import NavBar from "./components/NavBar";
 import {useDispatch, useSelector} from "react-redux";
-import {getOutgoingDocuments} from "./store/documents/outgoing/action";
+import {getOutgoingDocuments, shareDocument} from "./store/documents/outgoing/action";
 import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 
+export const statuses = new Map([
+    ["NEW", "Новый"],
+    ["SIGNED", "Подписанный"]
+])
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -43,9 +50,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
+
+
 const OutgoingDocuments = () => {
     const dispatch = useDispatch();
     const {data} = useSelector(state => state.outgoingDocumentsReducer);
+
+    const [docId, setDocId] = useState();
+
+    const handleShareLink = (id) => {
+        setDocId(id);
+        setShareLinkDialogOpen(true);
+    }
 
     useEffect(() => {
         dispatch(getOutgoingDocuments());
@@ -75,6 +91,7 @@ const OutgoingDocuments = () => {
                                 <StyledTableCell align="right">Наименование документа</StyledTableCell>
                                 <StyledTableCell align="right">Дата создания</StyledTableCell>
                                 <StyledTableCell align="right">Комментарии</StyledTableCell>
+                                <StyledTableCell align="right">Статус</StyledTableCell>
                                 <StyledTableCell align="right">Действия</StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -87,7 +104,10 @@ const OutgoingDocuments = () => {
                                     <StyledTableCell align="right">{row.name}</StyledTableCell>
                                     <StyledTableCell align="right">{row.createdAt}</StyledTableCell>
                                     <StyledTableCell align="right">{row.comment}</StyledTableCell>
-                                    <StyledTableCell align="right"><Link to={"/view/doc/" + row.id}>просмотр</Link></StyledTableCell>
+                                    <StyledTableCell align="right">{statuses.get(row.status)}</StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <Link to={"/view/doc/" + row.id}>просмотр</Link>
+                                    </StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>

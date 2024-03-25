@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getOutgoingDocuments, uploadFile} from "./action";
+import {getOutgoingDocuments, getSharedDocument, shareDocument, uploadFile} from "./action";
 
 
 export const outgoingDocumentsSlice = createSlice({
@@ -16,6 +16,36 @@ export const outgoingDocumentsSlice = createSlice({
             state.error = action.payload;
         });
         builder.addCase(getOutgoingDocuments.pending, (state) => {
+            state.isLoading = true;
+        })
+    }
+})
+
+export const shareDocumentSlice = createSlice({
+    name: "shareDocumentSlice",
+    initialState: {error: "", isLoading: false, link: {linkId: ""}, data: {document: {}, signatures: []}},
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(shareDocument.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.link = action.payload;
+        });
+        builder.addCase(shareDocument.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        });
+        builder.addCase(shareDocument.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getSharedDocument.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data = action.payload;
+        });
+        builder.addCase(getSharedDocument.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        });
+        builder.addCase(getSharedDocument.pending, (state) => {
             state.isLoading = true;
         })
     }

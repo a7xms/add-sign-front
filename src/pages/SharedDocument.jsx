@@ -10,64 +10,20 @@ import {
     TableHead,
     TableRow,
     Typography,
-    Paper, Dialog, DialogContent, Button, DialogTitle, DialogActions,
+    Paper, Dialog, DialogContent, Button,
 } from '@mui/material';
 import {useDispatch, useSelector} from "react-redux";
-import {getDocument} from "../store/documents/action";
 import {BASE_URL} from "../common/requester";
 import {statuses} from "../Outgouing";
 import {PinDialog} from "../components/CreateDocumentForm";
-import {shareDocument, signDocument} from "../store/documents/outgoing/action";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import {getSharedDocument, signSharedDocument} from "../store/documents/outgoing/action";
 
-const CopyLinkDialog = ({ onClose, open, documentId }) => {
-    const [copied, setCopied] = useState(false);
-    const {link} = useSelector(state => state.shareDocumentReducer);
+const SharedDocument = ({link}) => {
     const dispatch = useDispatch();
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText("http://localhost:3000/view/shared/" + link.linkId);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    useEffect(() => {
-        if(documentId) {
-            dispatch(shareDocument({id: documentId}));
-        }
-    },[documentId])
-
-    return (
-        <Dialog onClose={onClose} open={open}>
-            <DialogTitle>Поделиться ссылкой</DialogTitle>
-            <DialogContent>
-                <p>Ссылка: http://localhost:3000/view/shared/{link.linkId}</p>
-            </DialogContent>
-            <DialogActions>
-                <Tooltip title={copied ? 'Скопировано!' : 'Скопировать'} arrow>
-                    <IconButton onClick={handleCopy} style={{ color: 'primary' }}>
-                        <ContentCopyIcon />
-                    </IconButton>
-                </Tooltip>
-                <Button onClick={onClose} color="primary">
-                    Закрыть
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
-};
-
-
-const ViewDocument = ({id}) => {
-    const dispatch = useDispatch();
-    const {data} = useSelector(state => state.viewDocumentReducer);
+    const {data} = useSelector(state => state.shareDocumentReducer);
 
     const [open, setOpen] = useState(false);
     const [pinDialogOpen, setPinDialogOpen] = useState(false);
-
-    const [shareLinkDialogOpen, setShareLinkDialogOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -82,15 +38,15 @@ const ViewDocument = ({id}) => {
             documentId: data.id,
             cms: sign
         }
-        dispatch(signDocument({data: signedData})).then(() => {
+        dispatch(signSharedDocument({data: signedData})).then(() => {
             setPinDialogOpen(false);
-            dispatch(getDocument(id));
+            dispatch(getSharedDocument({id: link}));
         })
     }
 
 
     useEffect(() => {
-        dispatch(getDocument(id));
+        dispatch(getSharedDocument({id: link}));
 
     }, []);
 
@@ -161,39 +117,23 @@ const ViewDocument = ({id}) => {
                 </TableContainer>
             </Box>
             <Box>
-                {data.status === "NEW" ?
-                    (
-                        <Box>
-                            <PinDialog
-                                open={pinDialogOpen}
-                                onSignSubmit={onSignSubmit}
-                                data={data.document.data}
-                                onClose={() => setPinDialogOpen(false)}
-                            />
-                            <Button
-                                sx={{mt:3}}
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setPinDialogOpen(true)}
-                            >
-                                Подписать
-                            </Button>
-                        </Box>
-                    ) : ""}
-            </Box>
-            <Box>
-                <CopyLinkDialog open={shareLinkDialogOpen} onClose={() => setShareLinkDialogOpen(false)} documentId={data.id}/>
+                <PinDialog
+                    open={pinDialogOpen}
+                    onSignSubmit={onSignSubmit}
+                    data={data.document.data}
+                    onClose={() => setPinDialogOpen(false)}
+                />
                 <Button
                     sx={{mt:3}}
                     variant="contained"
                     color="primary"
-                    onClick={() => setShareLinkDialogOpen(true)}
+                    onClick={() => setPinDialogOpen(true)}
                 >
-                    Поделиться ссылкой
+                    Подписать
                 </Button>
             </Box>
         </Box>
     );
 };
 
-export default ViewDocument;
+export default SharedDocument;

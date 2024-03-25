@@ -9,6 +9,7 @@ import CreateDocumentForm from "./components/CreateDocumentForm";
 import CreateDocumentPage from "./pages/CreateDocument";
 import ViewDocument from "./pages/ViewDocument";
 import ViewDocumentPage from "./pages/ViewDocumentPage";
+import SharedDocumentPage from "./pages/SharedDocumentPage";
 
 const routes =[
     {
@@ -42,6 +43,10 @@ const routes =[
     {
         path: "view/doc/:id",
         element: <ViewDocumentPage/>
+    },
+    {
+        path: "view/shared/:link",
+        element: <SharedDocumentPage/>
     }
 ];
 
