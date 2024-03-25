@@ -1,0 +1,25 @@
+.my-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
+    margin-bottom: 16px;
+}
+
+.select-container {
+    min-width: 40%;
+}
+
+.pin-code-input {
+    min-width: 40%;
+}
+
+.submit-button {
+    min-width: 20%;
+}

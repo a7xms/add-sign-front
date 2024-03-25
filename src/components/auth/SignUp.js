@@ -31,8 +31,8 @@ const SignupPage = () => {
 
 
     return (
-        <Container maxWidth="sm" sx={{ py: 8 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
+        <Container maxWidth="sm" sx={{ py: 8}}>
+            <Typography variant="h4" component="h1" gutterBottom align={"center"}>
                 Sign Up
             </Typography>
             <RutokenWrapper buttonName="Signup" submit={submit} data={data.randomToken}/>
