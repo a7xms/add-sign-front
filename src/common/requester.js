@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export const BASE_URL = "http://localhost:8080/api/v1";
+export const BASE_URL = "http://176.126.164.136:8085/api/v1";
 
 
 axios.defaults.responseType = "json";
