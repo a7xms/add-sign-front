@@ -19,7 +19,7 @@ const SignInPage = () => {
             sign: sign
         }
         dispatch(login({navigate, ...request})).then(() => {
-            navigate("/")
+            navigate("/home")
         });
     }
 
@@ -34,9 +34,9 @@ const SignInPage = () => {
     return (
         <Container maxWidth="sm" sx={{ py: 8 }}>
             <Typography variant="h4" component="h1" gutterBottom align={"center"}>
-                Sign In
+                Вход
             </Typography>
-            <RutokenWrapper buttonName="Signin" submit={submit} data={data.randomToken}/>
+            <RutokenWrapper buttonName="Войти" submit={submit} data={data.randomToken}/>
         </Container>
     );
 };

@@ -33,9 +33,9 @@ const SignupPage = () => {
     return (
         <Container maxWidth="sm" sx={{ py: 8}}>
             <Typography variant="h4" component="h1" gutterBottom align={"center"}>
-                Sign Up
+                Регистрация
             </Typography>
-            <RutokenWrapper buttonName="Signup" submit={submit} data={data.randomToken}/>
+            <RutokenWrapper buttonName="Зарегистрироваться" submit={submit} data={data.randomToken}/>
         </Container>
     );
 };

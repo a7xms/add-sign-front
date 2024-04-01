@@ -91,7 +91,7 @@ const RutokenWrapper = ({buttonName, data, submit}) => {
         <form onSubmit={handleSubmit}
               style={{display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center'}}>
             <FormControl style={{minWidth: '120px'}}>
-                <InputLabel htmlFor="devices">Devices</InputLabel>
+                <InputLabel htmlFor="devices">Устройства</InputLabel>
                 <Select
                     id="devices"
                     name="devices"
@@ -104,7 +104,7 @@ const RutokenWrapper = ({buttonName, data, submit}) => {
             </FormControl>
 
             <FormControl style={{minWidth: '120px'}}>
-                <InputLabel htmlFor="certificates">Certificates</InputLabel>
+                <InputLabel htmlFor="certificates">Сертификаты</InputLabel>
                 <Select
                     id="certificates"
                     name="certificates"
@@ -120,7 +120,7 @@ const RutokenWrapper = ({buttonName, data, submit}) => {
                 <TextField
                     id="pin-code"
                     name="pin-code"
-                    label="Pin Code"
+                    label="Пин код"
                     type="number"
                     onChange={handlePinCodeChange}
                 />

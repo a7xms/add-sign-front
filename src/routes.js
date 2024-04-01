@@ -5,16 +5,19 @@ import OutgoingDocuments from "./Outgouing";
 import {createBrowserRouter} from "react-router-dom";
 import RegistrationSuccess from "./components/auth/RegistrationSuccess";
 import SignInPage from "./components/auth/SignIn";
-import CreateDocumentForm from "./components/CreateDocumentForm";
 import CreateDocumentPage from "./pages/CreateDocument";
-import ViewDocument from "./pages/ViewDocument";
 import ViewDocumentPage from "./pages/ViewDocumentPage";
 import SharedDocumentPage from "./pages/SharedDocumentPage";
+import UserHome from "./UserHome";
 
 const routes =[
     {
         path: '/',
         element: <Home/>
+    },
+    {
+        path: '/home',
+        element: <UserHome/>
     },
     {
         path: '/signup',

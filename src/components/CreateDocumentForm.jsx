@@ -72,7 +72,7 @@ export const PinDialog = ({ onClose, open, data, onSignSubmit }) => {
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>Подписать</DialogTitle>
             <DialogContent>
-                <RutokenWrapper data={data} submit={onSignSubmit} buttonName={"Sign"} />
+                <RutokenWrapper data={data} submit={onSignSubmit} buttonName={"Подписать"} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">
@@ -184,7 +184,7 @@ const CreateDocumentForm = () => {
             />
 
             <Button
-                sx={{mt:3}}
+                sx={{ml: 2}}
                 variant="contained"
                 color="primary"
                 onClick={handleCreateDocument}
