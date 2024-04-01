@@ -56,12 +56,6 @@ const OutgoingDocuments = () => {
     const dispatch = useDispatch();
     const {data} = useSelector(state => state.outgoingDocumentsReducer);
 
-    const [docId, setDocId] = useState();
-
-    const handleShareLink = (id) => {
-        setDocId(id);
-        setShareLinkDialogOpen(true);
-    }
 
     useEffect(() => {
         dispatch(getOutgoingDocuments());
