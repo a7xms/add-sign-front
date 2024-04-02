@@ -28,7 +28,7 @@ const CopyLinkDialog = ({ onClose, open, documentId }) => {
     const dispatch = useDispatch();
 
     const handleCopy = () => {
-        navigator.clipboard.writeText("http://localhost:3000/view/shared/" + link.linkId);
+        navigator.clipboard.writeText("http://176.126.164.136:3006/view/shared/" + link.linkId);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -43,7 +43,7 @@ const CopyLinkDialog = ({ onClose, open, documentId }) => {
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>Поделиться ссылкой</DialogTitle>
             <DialogContent>
-                <p>Ссылка: http://localhost:3000/view/shared/{link.linkId}</p>
+                <p>Ссылка: http://176.126.164.136:3006/view/shared/{link.linkId}</p>
             </DialogContent>
             <DialogActions>
                 <Tooltip title={copied ? 'Скопировано!' : 'Скопировать'} arrow>
